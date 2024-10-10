@@ -323,4 +323,57 @@ async login(rut: string, password: string): Promise<any> {
   }
 }
 
+
+// Obtener los datos del usuario desde la base de datos
+obtenerUsuario(idPersona: number): Promise<any> {
+  const query = 'SELECT * FROM persona WHERE idPersona = ?';
+  return this.database.executeSql(query, [idPersona])
+    .then(res => {
+      if (res.rows.length > 0) {
+        return {
+          idPersona: res.rows.item(0).idPersona,
+          nombres: res.rows.item(0).nombres,
+          apellidos: res.rows.item(0).apellidos,
+          rut: res.rows.item(0).rut,
+          correo: res.rows.item(0).correo,
+          clave: res.rows.item(0).clave,
+          telefono: res.rows.item(0).telefono,
+          foto: res.rows.item(0).foto
+        };
+      }
+      return null;
+    })
+    .catch(error => {
+      console.error('Error al obtener el usuario', error);
+      throw error;
+    });
+}
+
+actualizarUsuario(persona: any): Promise<any> {
+  const query = `
+    UPDATE persona 
+    SET nombres = ?, apellidos = ?, rut = ?, correo = ?, clave = ?, telefono = ?, foto = ? 
+    WHERE idPersona = ?
+  `;
+  const data = [
+    persona.nombres,
+    persona.apellidos,
+    persona.rut,
+    persona.correo,
+    persona.clave,
+    persona.telefono,
+    persona.foto,
+    persona.idPersona
+  ];
+
+  return this.database.executeSql(query, data)
+    .then(() => {
+      console.log('Usuario actualizado correctamente');
+    })
+    .catch(error => {
+      console.error('Error al actualizar el usuario', error);
+      throw error;
+    });
+}
+
 }

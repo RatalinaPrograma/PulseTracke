@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crud-hospital',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CrudHospitalPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router ) { }
 
   ngOnInit() {
+  }
+
+  verHospital(){
+    this.router.navigate(['/ver-hospital']); 
+  }
+  agregarHospital(){
+    this.router.navigate(['/agregar-hospital']); 
+  }
+  eliminarHospital(){
+    this.router.navigate(['/eliminar-hospital']); 
+  }
+  modificarHospital(){
+    this.router.navigate(['/modificar-hospital']); 
+  }
+
+  verReporte(){
+    this.router.navigate(['/home']); 
   }
 
 }

@@ -14,71 +14,54 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="background" style="--background: url('/assets/imgs/emergencias-fondo.png') no-repeat center center / cover;">
-  
-  <!-- Sección de Foto y Nombre -->
-  <ion-card>
-    <ion-card-content class="profile-section">
-      <div class="profile-picture">
-        <img src="assets/img/default-profile.png" alt="Foto de Perfil">
-      </div>
-      <div class="profile-info">
-        <ion-label class="profile-name">Nombre del Usuario</ion-label>
-        <ion-button size="small" color="secondary">Actualizar Foto</ion-button>
-      </div>
-    </ion-card-content>
-  </ion-card>
-  
-  <!-- Información Personal -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Datos Personales</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="stacked">Nombre Completo</ion-label>
-        <ion-input placeholder="Nombre del Usuario"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Correo Electrónico</ion-label>
-        <ion-input type="email" placeholder="usuario@correo.com"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Teléfono</ion-label>
-        <ion-input type="tel" placeholder="+34 123 456 789"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="stacked">Dirección</ion-label>
-        <ion-textarea placeholder="Calle, Ciudad, Código Postal"></ion-textarea>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-  
-  <!-- Configuración de Contacto -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Configuración de Contacto</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label>Recibir Notificaciones</ion-label>
-        <ion-toggle></ion-toggle>
-      </ion-item>
-      <ion-item>
-        <ion-label>Permitir Mensajes de Texto</ion-label>
-        <ion-toggle></ion-toggle>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-  
-  <!-- Botones de Acción -->
-  <ion-footer>
-    <ion-toolbar>
-      <ion-button expand="block" class="btn-azul-claro">Guardar Cambios</ion-button>
-    </ion-toolbar>
-  </ion-footer>
-  
+<ion-content [fullscreen]="true">
+  <div class="center-content">
+    <h1 class="page-title">Actualizar Usuario</h1>
+
+    <ion-card class="card">
+      <ion-card-content>
+        <form (submit)="guardarCambios()">
+          <!-- Campo de Nombres -->
+          <ion-item class="input-item">
+            <ion-label position="floating">Nombres</ion-label>
+            <ion-input [(ngModel)]="persona.nombres" name="nombres" required></ion-input>
+          </ion-item>
+
+          <!-- Campo de Apellidos -->
+          <ion-item class="input-item">
+            <ion-label position="floating">Apellidos</ion-label>
+            <ion-input [(ngModel)]="persona.apellidos" name="apellidos" required></ion-input>
+          </ion-item>
+
+          <!-- Campo de RUT -->
+          <ion-item class="input-item">
+            <ion-label position="floating">RUT</ion-label>
+            <ion-input [(ngModel)]="persona.rut" name="rut" required></ion-input>
+          </ion-item>
+
+          <!-- Campo de Correo -->
+          <ion-item class="input-item">
+            <ion-label position="floating">Correo</ion-label>
+            <ion-input type="email" [(ngModel)]="persona.correo" name="correo" required></ion-input>
+          </ion-item>
+
+          <!-- Campo de Contraseña -->
+          <ion-item class="input-item">
+            <ion-label position="floating">Contraseña</ion-label>
+            <ion-input type="password" [(ngModel)]="persona.clave" name="clave" required></ion-input>
+          </ion-item>
+
+          <!-- Botón de Registrar -->
+          <ion-button expand="block" class="register-button" type="submit">Guardar Cambios</ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botón para regresar -->
+    <ion-button expand="block" class="back-button" routerLink="/home">Regresar</ion-button>
+  </div>
 </ion-content>
+
 
 <ion-footer class="custom-footer">
   <ion-grid>
