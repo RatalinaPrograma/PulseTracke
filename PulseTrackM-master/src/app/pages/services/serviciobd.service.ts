@@ -22,7 +22,7 @@ export class ServiciobdService {
   
   tablaHospital: string = "CREATE TABLE IF NOT EXISTS hospital(idHospital INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR(100) NOT NULL, direccion VARCHAR(255) NOT NULL);";
 
-  tablaSignosV: string = "CREATE TABLE IF NOT EXISTS signos_vitales(idSigno INTEGER PRIMARY KEY AUTOINCREMENT, freq_cardiaca INTEGER, presion_arterial VARCHAR(10), temp_corporal REAL, sat_oxigeno INTEGER, freq_respiratoria INTEGER, condiciones TEXT, operaciones TEXT);";
+  tablaSignosV: string = "CREATE TABLE IF NOT EXISTS signos_vitales(idSigno INTEGER PRIMARY KEY AUTOINCREMENT, freq_cardiaca INTEGER, presion_arterial VARCHAR(10), temp_corporal INTEGER, sat_oxigeno INTEGER, freq_respiratoria INTEGER, condiciones TEXT, operaciones TEXT);";
 
   tablaDetalle: string = "CREATE TABLE IF NOT EXISTS detalle(idDetalle INTEGER PRIMARY KEY AUTOINCREMENT, idEmerg INTEGER, idPaciente INTEGER, FOREIGN KEY (idEmerg) REFERENCES emergencia(idEmerg), FOREIGN KEY (idPaciente) REFERENCES paciente(idPaciente));";
 
@@ -150,6 +150,20 @@ export class ServiciobdService {
         this.AlertasService.presentAlert("Agregar rol", "Ocurrió un error: " + JSON.stringify(e));
       });
   }
+
+    operaciones!: string; 
+
+  agregarSignosV(freq_cardiaca:number,presion_arterial:string,temp_corporal:number,sat_oxigeno:number,freq_respiratoria:number,condiciones:string, operaciones:string) {
+    return this.database.executeSql('INSERT OR IGNORE INTO SignosV (freq_cardiaca, presion_arterial, temp_corporal, sat_oxigeno, freq_respiratoria,condiciones,operaciones) VALUES (?, ?, ?, ?, ?,?,?)', [freq_cardiaca, presion_arterial, temp_corporal, sat_oxigeno, freq_respiratoria,condiciones,operaciones])
+      .then(res => {
+        this.AlertasService.presentAlert("Agregar signos vitales", "Signos vitales agregados correctamente.");
+        this.consultartablaPaciente();
+      })
+      .catch(e => {
+        this.AlertasService.presentAlert("Agregar signos vitales", "Ocurrió un error: " + JSON.stringify(e));
+      });
+  }
+
 
   // Consultar
 
