@@ -72,15 +72,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/olvido/olvido.module').then( m => m.OlvidoPageModule)
   },
   {
-    path: '**',
-    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
-  },  {
     path: 'crud-usuarios',
     loadChildren: () => import('./pages/crud-usuarios/crud-usuarios.module').then( m => m.CrudUsuariosPageModule)
-  },
-  {
-    path: 'agregar-usuarios',
-    loadChildren: () => import('./pages/agregar-usuarios/agregar-usuarios.module').then( m => m.AgregarUsuariosPageModule)
   },
   {
     path: 'eliminar-usuarios',
@@ -99,7 +92,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/agregar-pacientes/agregar-pacientes.module').then( m => m.AgregarPacientesPageModule)
   },
   {
-    path: 'eliminar-pacientes',
+    path: 'eliminar-pacientes/:rut',
     loadChildren: () => import('./pages/eliminar-pacientes/eliminar-pacientes.module').then( m => m.EliminarPacientesPageModule)
   },
   {
@@ -111,7 +104,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modificar-usuarios/modificar-usuarios.module').then( m => m.ModificarUsuariosPageModule)
   },
   {
-    path: 'modificar-pacientes',
+    path: 'modificar-pacientes/:rut',
     loadChildren: () => import('./pages/modificar-pacientes/modificar-pacientes.module').then( m => m.ModificarPacientesPageModule)
   },
   {
@@ -154,6 +147,11 @@ const routes: Routes = [
     path: 'crud-unidad',
     loadChildren: () => import('./pages/crud-unidad/crud-unidad.module').then( m => m.CrudUnidadPageModule)
   },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+
 
   
 

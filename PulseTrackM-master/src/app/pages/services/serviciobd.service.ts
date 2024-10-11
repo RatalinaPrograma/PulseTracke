@@ -118,38 +118,11 @@ export class ServiciobdService {
 
   // Agregar
 
-  agregarPaciente(nombre: string, f_nacimiento: Date, idGenero: number, rut: string, telefono_contacto: string) {
-    return this.database.executeSql('INSERT OR IGNORE INTO paciente (nombre, f_nacimiento, idGenero, rut, telefono_contacto) VALUES (?, ?, ?, ?, ?)', [nombre, f_nacimiento, idGenero, rut, telefono_contacto])
-      .then(res => {
-        this.AlertasService.presentAlert("Agregar paciente", "Paciente agregado correctamente.");
-        this.consultartablaPaciente();
-      })
-      .catch(e => {
-        this.AlertasService.presentAlert("Agregar paciente", "Ocurrió un error: " + JSON.stringify(e));
-      });
-  }
+  
 
-  agregarTrabajador(idAmb: number, idPersona: number) {
-    return this.database.executeSql('INSERT OR IGNORE INTO trabajador (idambulancia, idPersona) VALUES (?, ?)', [idAmb, idPersona])
-      .then(res => {
-        this.AlertasService.presentAlert("Agregar trabajador", "Trabajador agregado correctamente.");
-        this.consultartablaTrabajador();
-      })
-      .catch(e => {
-        this.AlertasService.presentAlert("Agregar trabajador", "Ocurrió un error: " + JSON.stringify(e));
-      });
-  }
 
-  agregarRol(nombre: string) {
-    return this.database.executeSql('INSERT OR IGNORE INTO rol (nombre) VALUES (?)', [nombre])
-      .then(res => {
-        this.AlertasService.presentAlert("Agregar rol", "Rol agregado correctamente.");
-        this.consultartablaRol();
-      })
-      .catch(e => {
-        this.AlertasService.presentAlert("Agregar rol", "Ocurrió un error: " + JSON.stringify(e));
-      });
-  }
+
+
 
     operaciones!: string; 
 
@@ -157,7 +130,7 @@ export class ServiciobdService {
     return this.database.executeSql('INSERT OR IGNORE INTO SignosV (freq_cardiaca, presion_arterial, temp_corporal, sat_oxigeno, freq_respiratoria,condiciones,operaciones) VALUES (?, ?, ?, ?, ?,?,?)', [freq_cardiaca, presion_arterial, temp_corporal, sat_oxigeno, freq_respiratoria,condiciones,operaciones])
       .then(res => {
         this.AlertasService.presentAlert("Agregar signos vitales", "Signos vitales agregados correctamente.");
-        this.consultartablaPaciente();
+
       })
       .catch(e => {
         this.AlertasService.presentAlert("Agregar signos vitales", "Ocurrió un error: " + JSON.stringify(e));
@@ -165,9 +138,21 @@ export class ServiciobdService {
   }
 
 
-  // Consultar
+  // PACIENTE
 
-  consultartablaPaciente() {
+  agregarPaciente(nombre: string, f_nacimiento: Date, idGenero: number, rut: string, telefono_contacto: string) {
+    return this.database.executeSql('INSERT OR IGNORE INTO paciente (nombre, f_nacimiento, idGenero, rut, telefono_contacto) VALUES (?, ?, ?, ?, ?)', [nombre, f_nacimiento, idGenero, rut, telefono_contacto])
+      .then(res => {
+        this.AlertasService.presentAlert("Agregar paciente", "Paciente agregado correctamente.");
+
+      })
+      .catch(e => {
+        this.AlertasService.presentAlert("Agregar paciente", "Ocurrió un error: " + JSON.stringify(e));
+      });
+  }
+
+
+  consultartablaPaciente(): Promise<Pacientes[]> {
     return this.database.executeSql('SELECT * FROM paciente', []).then(res => {
       let itemsR: Pacientes[] = [];
       if (res.rows.length > 0) {
@@ -182,7 +167,7 @@ export class ServiciobdService {
           });
         }
       }
-      this.listadoPacientes.next(itemsR);
+      return itemsR;
     });
   }
 
@@ -210,71 +195,28 @@ export class ServiciobdService {
     });
   }
 
-  consultartablaTrabajador() {
-    return this.database.executeSql('SELECT * FROM trabajador', []).then(res => {
-      let itemsT: Trabajador[] = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          itemsT.push({
-            idTrab: res.rows.item(i).idTrab,
-            idAmb: res.rows.item(i).idAmb,
-            idPersona: res.rows.item(i).idPersona
-          });
-        }
-      }
-      this.listadoTrabajador.next(itemsT);
-    });
-  }
-
-  consultartablaRol() {
-    return this.database.executeSql('SELECT * FROM rol', []).then(res => {
-      let itemsR: Rol[] = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          itemsR.push({
-            idrol: res.rows.item(i).idrol,
-            nombre: res.rows.item(i).nombre
-          });
-        }
-      }
-      this.listadoRol.next(itemsR);
-    });
-  }
-
-  // Modificar
-
+  
   modificarPaciente(idPaciente: number, nombre: string, f_nacimiento: Date, idGenero: number, rut: string, telefono_contacto: string) {
     return this.database.executeSql('UPDATE paciente SET nombre = ?, f_nacimiento = ?, idGenero = ?, rut = ?, telefono_contacto = ? WHERE idPaciente = ?', [nombre, f_nacimiento, idGenero, rut, telefono_contacto, idPaciente])
       .then(res => {
         this.AlertasService.presentAlert("Modificar paciente", "Paciente modificado correctamente");
-        this.consultartablaPaciente();
       })
       .catch(e => {
         this.AlertasService.presentAlert("Modificar paciente", "Error: " + JSON.stringify(e));
       });
   }
 
-  modificarTrabajador(idTrab: number, idAmb: number, idPersona: number) {
-    return this.database.executeSql('UPDATE trabajador SET idambulancia = ?, idPersona = ? WHERE idTrab = ?', [idAmb, idPersona, idTrab])
-      .then(res => {
-        this.AlertasService.presentAlert("Modificar trabajador", "Trabajador modificado correctamente");
-        this.consultartablaTrabajador();
-      })
-      .catch(e => {
-        this.AlertasService.presentAlert("Modificar trabajador", "Error: " + JSON.stringify(e));
-      });
-  }
 
-  modificarRol(idrol: number, nombre: string) {
-    return this.database.executeSql('UPDATE rol SET nombre = ? WHERE idrol = ?', [nombre, idrol])
-      .then(res => {
-        this.AlertasService.presentAlert("Modificar rol", "Rol modificado correctamente");
-        this.consultartablaRol();
-      })
-      .catch(e => {
-        this.AlertasService.presentAlert("Modificar rol", "Error: " + JSON.stringify(e));
-      });
-  }
+eliminarPaciente(rut: string): Promise<void> {
+  return this.database.executeSql('DELETE FROM paciente WHERE idPaciente = ?', [rut])
+    .then(res => {
+      this.AlertasService.presentAlert("Eliminar paciente", "Paciente eliminado correctamente");
+
+    })
+    .catch(e => {
+      this.AlertasService.presentAlert("Eliminar paciente", "Error: " + JSON.stringify(e));
+    });
+}
 
 
 
@@ -350,11 +292,11 @@ obtenerUsuario(idPersona: number): Promise<any> {
 }
 
 actualizarUsuario(persona: any): Promise<any> {
-  const query = `
+  return this.database.executeSql (`
     UPDATE persona 
     SET nombres = ?, apellidos = ?, rut = ?, correo = ?, clave = ?, telefono = ?, foto = ? 
     WHERE idPersona = ?
-  `;
+  `);
   const data = [
     persona.nombres,
     persona.apellidos,
@@ -366,14 +308,9 @@ actualizarUsuario(persona: any): Promise<any> {
     persona.idPersona
   ];
 
-  return this.database.executeSql(query, data)
-    .then(() => {
-      console.log('Usuario actualizado correctamente');
-    })
-    .catch(error => {
-      console.error('Error al actualizar el usuario', error);
-      throw error;
-    });
+  
+
 }
+
 
 }

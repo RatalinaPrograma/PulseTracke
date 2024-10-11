@@ -10,35 +10,25 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="background">
-  <div class="verbtn">
-    <ion-button class="btn-azul-suave" expand="block" (click)="verPacientes()">
-      <ion-icon slot="start" name="eye"></ion-icon>
-      Ver Pacientes
-    </ion-button>
-  </div>
-
-  <div class="agrbtn">
-    <ion-button class="btn-verde-claro" expand="block" (click)="agregarPacientes()">
-      <ion-icon slot="start" name="add"></ion-icon>
-      Agregar Pacientes
-    </ion-button>
-  </div>
-
-  <div class="edbtn">
-    <ion-button class="btn-aqua" expand="block" (click)="modificarPacientes()">
-      <ion-icon slot="start" name="create"></ion-icon>
-      Modificar Pacientes
-    </ion-button>
-  </div>
-
-  <div class="elbtn">
-    <ion-button class="btn-verde-menta" expand="block" (click)="eliminarPacientes()">
-      <ion-icon slot="start" name="trash"></ion-icon>
-      Eliminar Pacientes
-    </ion-button>
-  </div>
+<ion-content>
+  <ion-card *ngFor="let paciente of pacientes" class="paciente-card">
+    <ion-card-header>
+      <ion-card-title>{{ paciente.nombre }}</ion-card-title>
+      <ion-card-subtitle>Rut: {{ paciente.rut }}</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p><strong>Fecha de Nacimiento:</strong> {{ paciente.f_nacimiento }}</p>
+      <p><strong>Género:</strong> {{ paciente.idGenero }}</p>
+      <p><strong>Télefono de Contacto:</strong> {{ paciente.telefono_contacto }}</p>
+    </ion-card-content>
+  
+      <ion-button fill="clear" (click)="eliminarPacientes(paciente.rut)">Eliminar</ion-button>
+      <ion-button fill="clear" (click)="modificarPacientes(paciente.rut)">Modificar</ion-button>
+  </ion-card>
+  
 </ion-content>
+
 
 <ion-footer class="custom-footer">
   <ion-button expand="block" (click)="verReporte()">
